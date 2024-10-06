@@ -18,6 +18,16 @@
     <p id="detalleOverview"></p>
     <p><strong>Géneros:</strong> <span id="detalleGenres"></span></p>
     <button id="btnCerrar" class="btn btn-secondary">Cerrar</button>
+
+    <button id="btnDetalles" class="btn btn-info">Mostrar detalles</button>
+    <div id="detalles" class="detalles">
+      <p><strong>Año de lanzamiento:</strong> <span id="detalleYear"></span></p>
+      <p><strong>Duración:</strong> <span id="detalleDuration"></span> minutos</p>
+      <p><strong>Presupuesto:</strong> $<span id="detalleBudget"></span></p>
+      <p><strong>Ganancias:</strong> $<span id="detalleRevenue"></span></p>
+    </div>
+
+    <button id="btnCerrar" class="btn btn-secondary">Cerrar</button>
   </div>
   <main>
     <div class="text-center container">
@@ -49,7 +59,7 @@
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script>
-      let moviesData = [];
+    let moviesData = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch('https://japceibal.github.io/japflix_api/movies-data.json')
@@ -105,8 +115,18 @@ function mostrarDetalles(movie) {
   document.getElementById('detalleTitle').innerText = movie.title;
   document.getElementById('detalleOverview').innerText = movie.overview;
   document.getElementById('detalleGenres').innerText = movie.genres.join(', ');
+  document.getElementById('detalleYear').innerText = new Date(movie.release_date).getFullYear();
+  document.getElementById('detalleDuration').innerText = movie.runtime;
+  document.getElementById('detalleBudget').innerText = movie.budget ? movie.budget.toLocaleString() : 'N/A';
+  document.getElementById('detalleRevenue').innerText = movie.revenue ? movie.revenue.toLocaleString() : 'N/A';
   document.getElementById('detalleContenedor').style.display = 'block';
+  document.getElementById('detalles').style.display = 'none'; // Oculta los detalles al principio
 }
+
+document.getElementById('btnDetalles').addEventListener('click', () => {
+  const detallesDiv = document.getElementById('detalles');
+  detallesDiv.style.display = detallesDiv.style.display === 'none' ? 'block' : 'none';
+});
 
 document.getElementById('btnCerrar').addEventListener('click', () => {
   document.getElementById('detalleContenedor').style.display = 'none';

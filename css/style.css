@@ -39,4 +39,9 @@ main {
     z-index: 1000;
     width: 80%;
     max-width: 600px;
-  }
+}
+
+.detalles {
+    display: none;
+    margin-top: 10px;
+}
