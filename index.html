@@ -43,16 +43,56 @@
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script>
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('https://japceibal.github.io/japflix_api/movies-data.json')
-        .then(response => response.json())
-        .then(data => {
-          
-          console.log(data);
-        })
-        .catch(error => console.error('Error al cargar los datos:', error));
+    let moviesData = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('https://japceibal.github.io/japflix_api/movies-data.json')
+    .then(response => response.json())
+    .then(data => {
+      moviesData = data; // Guarda los datos de las películas en una variable
+      console.log(moviesData); // Verificar que los datos se están cargando correctamente
+    })
+    .catch(error => console.error('Error al cargar los datos:', error));
+});
+
+document.getElementById('btnBuscar').addEventListener('click', () => {
+  const query = document.getElementById('inputBuscar').value.toLowerCase();
+  if (query) {
+    const results = moviesData.filter(movie => {
+      return (
+        movie.title.toLowerCase().includes(query) ||
+        movie.genres.some(genre => genre.toLowerCase().includes(query)) ||
+        (movie.tagline && movie.tagline.toLowerCase().includes(query)) ||
+        (movie.overview && movie.overview.toLowerCase().includes(query))
+      );
     });
+    renderResults(results);
+  } else {
+    alert('Por favor ingrese un término de búsqueda.');
+  }
+});
+
+function renderResults(results) {
+  const lista = document.getElementById('lista');
+  lista.innerHTML = ''; // Limpiar la lista antes de agregar nuevos resultados
+
+  if (results.length === 0) {
+    lista.innerHTML = '<li class="list-group-item">No se encontraron resultados.</li>';
+    return;
+  }
+
+  results.forEach(movie => {
+    const starRating = '★'.repeat(Math.round(movie.vote_average / 2)) + '☆'.repeat(5 - Math.round(movie.vote_average / 2));
+    const listItem = document.createElement('li');
+    listItem.className = 'list-group-item bg-dark text-light';
+    listItem.innerHTML = `
+      <h5>${movie.title}</h5>
+      <p>${movie.tagline}</p>
+      <p>Calificación: ${starRating} (${movie.vote_average})</p>
+    `;
+    lista.appendChild(listItem);
+  });
+}
   </script>
 
 </body>
