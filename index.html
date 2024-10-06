@@ -13,6 +13,12 @@
 </head>
 
 <body class="bg-dark">
+  <div id="detalleContenedor" class="text-dark">
+    <h2 id="detalleTitle"></h2>
+    <p id="detalleOverview"></p>
+    <p><strong>Géneros:</strong> <span id="detalleGenres"></span></p>
+    <button id="btnCerrar" class="btn btn-secondary">Cerrar</button>
+  </div>
   <main>
     <div class="text-center container">
       <div class="row py-lg-3">
@@ -43,7 +49,7 @@
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script>
-    let moviesData = [];
+      let moviesData = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch('https://japceibal.github.io/japflix_api/movies-data.json')
@@ -90,9 +96,21 @@ function renderResults(results) {
       <p>${movie.tagline}</p>
       <p>Calificación: ${starRating} (${movie.vote_average})</p>
     `;
+    listItem.addEventListener('click', () => mostrarDetalles(movie));
     lista.appendChild(listItem);
   });
 }
+
+function mostrarDetalles(movie) {
+  document.getElementById('detalleTitle').innerText = movie.title;
+  document.getElementById('detalleOverview').innerText = movie.overview;
+  document.getElementById('detalleGenres').innerText = movie.genres.join(', ');
+  document.getElementById('detalleContenedor').style.display = 'block';
+}
+
+document.getElementById('btnCerrar').addEventListener('click', () => {
+  document.getElementById('detalleContenedor').style.display = 'none';
+});
   </script>
 
 </body>
