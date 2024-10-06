@@ -42,6 +42,18 @@
   </footer>
 
   <script src="js/bootstrap.bundle.min.js"></script>
+  <script>
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('https://japceibal.github.io/japflix_api/movies-data.json')
+        .then(response => response.json())
+        .then(data => {
+          
+          console.log(data);
+        })
+        .catch(error => console.error('Error al cargar los datos:', error));
+    });
+  </script>
 
 </body>
 
